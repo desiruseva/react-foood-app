@@ -2,13 +2,17 @@
 import { NavLink, useParams, useNavigate} from 'react-router-dom'
 import { useState, React, useContext, useEffect} from "react";
 import { adddata } from './context/ContextProvider';
+import { updatedata } from './context/ContextProvider'
 
 
 export const Edit = () => {
 
-  const { updata, setUPdata } = useContext(adddata);
+  // const [getuserdata, setuserdata] = useState([]);
+  // console.log(getuserdata);
 
-  const history = useNavigate();
+  const {updata, setUPdata} = useContext(updatedata);
+
+  const navigate = useNavigate();
 
   const [inpt, setINP] = useState({
     description: "", 
@@ -34,7 +38,7 @@ export const Edit = () => {
 
   const getdata = async () => {
 
-      const res = await fetch(`/induser/${id}`, {
+      const res = await fetch(`/getfood/${id}`, {
           method: "GET",
           headers: {
               "Content-Type": "application/json"
@@ -48,7 +52,7 @@ export const Edit = () => {
           console.log("error ");
 
       } else {
-          setINP(data[0])
+          setINP(data)
           console.log("get data");
 
       }
@@ -58,7 +62,7 @@ export const Edit = () => {
       getdata();
   }, []);
 
-
+// update user data
   const updateuser = async(e)=>{
       e.preventDefault();
 
@@ -80,8 +84,9 @@ export const Edit = () => {
       if(res2.status === 422 || !data2){
           alert("fill the data");
       }else{
-          history.push("/")
+          navigate("/", { replace: true });
           setUPdata(data2);
+          alert("data updated");
       }
   }
 
@@ -115,7 +120,7 @@ export const Edit = () => {
           <input type="checkbox" class="form-check-input" id="exampleCheck1"></input>
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" onClick={updateuser} class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>
