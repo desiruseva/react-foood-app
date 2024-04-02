@@ -55,7 +55,7 @@ export const Home = () => {
 
     // Filter the user data based on the search query
     const filteredUserData = getuserdata.filter((userData) =>
-        userData.description.toLowerCase().includes(searchQuery.toLowerCase())
+        userData.description.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
 
     return (
